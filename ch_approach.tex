@@ -1,19 +1,19 @@
 %Our click model is designed for CTR prediction of display advertising. The observations of this application are Users' profile information, Ads' static attributes, and Users' behavior history. Different from the sponsored search, users come into display advertising system without clear target. Thus we wish to mining users' interest from the context information and estimate the CTR of each display accurately.
-\section{Deep Interest Network}\label{sec:opa}
+\section{深度兴趣网络}\label{sec:opa}
 
-Different from sponsored search, users come into display advertising system without explicitly expressed intentions. 
-Effective approaches are required to extract user interests from rich historical behaviors when building the CTR prediction model. 
-Features that depict users and ads are the basic elements in the CTR modeling of advertisement system. 
-Making use of these features reasonably and mining information from them are critical.
+与赞助搜索不同，用户进入展示广告系统时并没有明确表达的意图。
+构建 CTR 预测模型时，需要有效方法从丰富的历史行为中提取用户兴趣。
+描述用户和广告的特征是广告系统 CTR 建模的基本元素。
+合理使用这些特征并从中挖掘信息至关重要。
 
-\subsection{Feature Representation}
-Data in industrial CTR prediction tasks is mostly in a multi-group categorial form, for example, [weekday=Friday, gender=Female, \\ visited$\_$cate$\_$ids=$\{$Bag,Book$\}$, ad$\_$cate$\_$id=Book],
-which is normally transformed into high-dimensional sparse binary features via encoding \cite{deep_crossing,widedeep,ftrl}. 
-Mathematically, encoding vector of i-th feature group is formularized as $\textbf{t}_i \in R^{K_i}$. $K_i$ denotes the dimensionality of feature group $i$, which means feature group $i$ contains $K_i$ unique ids. 
-$\textbf{t}_i[j]$ is the j-th element of $\textbf{t}_i$  and $\textbf{t}_i[j] \in \{0,1\}$. $\sum_{j=1}^{K_i} \textbf{t}_i[j]=k$. 
-Vector $\textbf{t}_i$ with $k=1$ refers to one-hot encoding and $k>1$ refers to multi-hot encoding. 
-Then one instance can be represent as $\bs{x} = [\bs{t}_1^T, \bs{t}_2^T,...\bs{t}_M^T]^T$ in a group-wise manner, where $M$ is number of feature groups, $\sum_{i=1}^{M}K_i = K$, $K$ is dimensionality of the entire feature space. 
-In this way, the aforementioned instance with four groups of features are illustrated as: 
+\subsection{特征表征}
+工业 CTR 预测任务中的数据大多呈多组类别形式，例如 [weekday=Friday, gender=Female, \\ visited$\_$cate$\_$ids=$\{$Bag,Book$\}$, ad$\_$cate$\_$id=Book]，
+通常会通过编码转换为高维稀疏二值特征 \cite{deep_crossing,widedeep,ftrl}。
+在数学上，第 $i$ 个特征组的编码向量形式化为 $\textbf{t}_i \in R^{K_i}$。$K_i$ 表示特征组 $i$ 的维度，即特征组 $i$ 包含 $K_i$ 个唯一 id。
+$\textbf{t}_i[j]$ 是 $\textbf{t}_i$ 的第 j 个元素，且 $\textbf{t}_i[j] \in \{0,1\}$。$\sum_{j=1}^{K_i} \textbf{t}_i[j]=k$。
+当 $k=1$ 时，向量 $\textbf{t}_i$ 表示 one-hot 编码；当 $k>1$ 时，表示 multi-hot 编码。
+随后，一个样本可以按组表示为 $\bs{x} = [\bs{t}_1^T, \bs{t}_2^T,...\bs{t}_M^T]^T$，其中 $M$ 为特征组数量，$\sum_{i=1}^{M}K_i = K$，$K$ 为整个特征空间的维度。
+通过这种方式，上述包含四组特征的样本可表示为：
 %\begin{equation}
 \[
 %  \underbrace{a + \overbrace{b+\cdots}^{{}=t}+z}_{\text{total}} ~~ a + {\overbrace{b+\cdots}^{126}+z
@@ -22,12 +22,12 @@ In this way, the aforementioned instance with four groups of features are illust
 \]
 %\end{equation}
 
-The whole feature set used in our system is described in Table \ref{table_feature_set}.
-It is composed of four categories, among which user behavior features are typically multi-hot encoding vectors and contain rich information of user interests. 
-Note that in our setting, there are no combination features. We capture the interaction of features with deep neural network. 
+表 \ref{table_feature_set} 描述了我们系统中使用的完整特征集。
+它由四类特征组成，其中用户行为特征通常是 multi-hot 编码向量，并包含丰富的用户兴趣信息。
+需要注意的是，在我们的设置中没有组合特征。我们使用深度神经网络捕获特征之间的交互。
 
 \begin{table}
-\caption{Statistics of feature sets used in the display advertising system in Alibaba. Features are composed of sparse binary vectors in the group-wise manner.} % The dimensionality of fine-grained $goods\_ids$ feature scales up to $10^9$.}
+\caption{阿里巴巴展示广告系统中使用的特征集统计。特征按组由稀疏二值向量组成。} % The dimensionality of fine-grained $goods\_ids$ feature scales up to $10^9$.}
 \centering
 \resizebox{0.47\textwidth}{!}{%
 \label{table:fea-table}
@@ -62,58 +62,58 @@ Category & Feature Group & Dimemsionality & Type & \#Nonzero Ids per Instance\\ 
 \begin{figure*}[!t]
 \centering
 \includegraphics[height=7in, width=7in,keepaspectratio]{images/omni/DIN_new.png}
-\caption{Network Architecture. The left part illustrates the network of base model (Embedding\&MLP). Embeddings of cate\_id, shop\_id and goods\_id belong to one goods are concatenated to represent one visited goods in user's behaviors. Right part is our proposed DIN model. It introduces a local activation unit, with which the representation of user interests varies adaptively given different candidate ads.}
+\caption{网络架构。左侧展示基础模型 (Embedding\&MLP) 的网络。属于同一商品的 cate\_id、shop\_id 和 goods\_id 的 embedding 被拼接起来，用于表示用户行为中的一个访问商品。右侧是我们提出的 DIN 模型。它引入局部激活单元，使用户兴趣表征能够针对不同候选广告自适应变化。}
 \label{model_arch}
 \end{figure*}
 
 
-\subsection{Base Model(Embedding\&MLP)}
+\subsection{基础模型 (Embedding\&MLP)}
 \label{sec:basemodel}
 %Following the popular model structure introduced in \cite{deep_crossing,widedeep,youtube:recommend}, we design our base model as shown in the left of Fig.\ref{model_arch}.
-Most of the popular model structures \cite{deep_crossing,widedeep,youtube:recommend} share a similar Embedding\&MLP paradigm, which we refer to as base model, as shown in the left of Fig.\ref{model_arch}. It consists of several parts:
+大多数流行模型结构 \cite{deep_crossing,widedeep,youtube:recommend} 共享相似的 Embedding\&MLP 范式，本文将其称为基础模型，如图 \ref{model_arch} 左侧所示。它由几个部分组成：
 %It follows the embedding\&MLP architecture. %, with all the parameters trained in the end-to-end manner.
-\paragraph{\textbf{Embedding layer}} As the inputs are high dimensional binary vectors, embedding layer is used to transform them into low dimensional dense representations. 
+\paragraph{\textbf{Embedding 层}} 由于输入是高维二值向量，embedding 层用于将其转换为低维稠密表征。
 %Let $\bs{t}_i\in \mathbb{R}^{K_i}$ represent the feature vector of i-th group in Table \ref{table_feature_set}. 
 %Then one instance can be represent as $\bs{x} = [\bs{t}_1^T, \bs{t}_2^T,...\bs{t}_M^T]^T$ in a group-wise manner, where $M$ is number of feature groups, $\sum_{i=1}^{M}K_i = K$, $K$ is dimensionality of the entire feature space. 
-For the i-th feature group of $\bs{t}_i$,  let $\mathrm{W}^i = [w_1^i,...,w_j^i, ..., w_{K_i}^i] \in\mathbb{R}^{D \times K_i}$ represent the i-th embedding dictionary, where $w_j^i \in R^D$ is an embedding vector with dimensionality of $D$.  
+对于 $\bs{t}_i$ 的第 $i$ 个特征组，令 $\mathrm{W}^i = [w_1^i,...,w_j^i, ..., w_{K_i}^i] \in\mathbb{R}^{D \times K_i}$ 表示第 $i$ 个 embedding 字典，其中 $w_j^i \in R^D$ 是维度为 $D$ 的 embedding 向量。
 %Given instance of $\bs{x} = [\bs{t}_1^T, \bs{t}_2^T,...\bs{t}_M^T]^T$.
-Embedding operation follows the table lookup mechanism, as illustrated in Fig.\ref{model_arch}. 
+embedding 操作遵循查表机制，如图 \ref{model_arch} 所示。
 \begin{itemize}
-\item If $\bs{t}_i$ is one-hot vector with j-th element $\bs{t}_i[j]=1$, the embedded representation of $\bs{t}_i$ is a single embedding vector $\bs{e}_i = w_j^i$. 
-\item If $\bs{t}_i$ is multi-hot vector with $\bs{t}_i[j]=1 ~\text{for}~ j \in \{i_1, i_2, ..., i_k\} $, the embedded representation of $\bs{t}_i$ is a list of embedding vectors: $\{\bs{e}_{i_1}, \bs{e}_{i_2},...\bs{e}_{i_k}\} = \{w_{i_1}^i, w_{i_2}^i, ...w_{i_k}^i\}$.
+\item 如果 $\bs{t}_i$ 是 one-hot 向量，且第 j 个元素 $\bs{t}_i[j]=1$，则 $\bs{t}_i$ 的 embedding 表征是单个 embedding 向量 $\bs{e}_i = w_j^i$。
+\item 如果 $\bs{t}_i$ 是 multi-hot 向量，且 $\bs{t}_i[j]=1 ~\text{for}~ j \in \{i_1, i_2, ..., i_k\} $，则 $\bs{t}_i$ 的 embedding 表征是一组 embedding 向量：$\{\bs{e}_{i_1}, \bs{e}_{i_2},...\bs{e}_{i_k}\} = \{w_{i_1}^i, w_{i_2}^i, ...w_{i_k}^i\}$。
 \end{itemize}
 
 
 
-\paragraph{\textbf{Pooling layer and Concat layer}} 
-Notice that different users have different numbers of behaviors. Thus the number of non-zero values for multi-hot behavioral feature vector $\bs{t}_i$  varies across instances, causing the lengths of the corresponding list of embedding vectors to be variable.
-As fully connected networks can only handle fixed-length inputs, it is a common practice \cite{widedeep,youtube:recommend} to transform the list of embedding vectors via a pooling layer to get a fixed-length vector: 
+\paragraph{\textbf{Pooling 层和 Concat 层}}
+注意，不同用户拥有不同数量的行为。因此，multi-hot 行为特征向量 $\bs{t}_i$ 中非零值的数量会随样本变化，导致对应 embedding 向量列表的长度可变。
+由于全连接网络只能处理定长输入，常见做法 \cite{widedeep,youtube:recommend} 是通过 pooling 层将 embedding 向量列表转换为定长向量：
 \begin{equation}
 \label{eq:pooling}
 \bs{e}_i = \text{pooling}(\bs{e}_{i_1}, \bs{e}_{i_2},...\bs{e}_{i_k}).	
 \end{equation}
-Two most commonly used pooling layers are sum pooling and average pooling, which apply element-wise sum/average operations to the list of embedding vectors. 
+最常用的两种 pooling 层是 sum pooling 和 average pooling，它们对 embedding 向量列表执行逐元素求和或求平均操作。
 
-Both embedding and pooling layers operate in a group-wise manner, mapping the original sparse features into multiple fixed-length representation vectors.   
-Then all the vectors are concatenated together to obtain the overall representation vector for the instance. 
+embedding 层和 pooling 层都按组操作，将原始稀疏特征映射为多个定长表征向量。
+随后，将所有向量拼接起来，得到该样本的整体表征向量。
 
-\paragraph{\textbf{MLP}} Given the concatenated dense representation vector, fully connected layers are used to learn the combination of features automatically. 
-Recently developed methods \cite{widedeep,DeepFM,PNN} focus on designing structures of MLP for better information extraction. \par
-\paragraph{\textbf{Loss}}The objective function used in base model is the negative log-likelihood function defined as:
+\paragraph{\textbf{MLP}} 给定拼接后的稠密表征向量，全连接层用于自动学习特征组合。
+近期提出的方法 \cite{widedeep,DeepFM,PNN} 关注 MLP 结构设计，以更好地提取信息。\par
+\paragraph{\textbf{损失}}基础模型使用的目标函数是负对数似然函数，定义如下：
 \begin{equation}
     L= - \frac{1}{N} \sum_{(\bs{x},y)\in\mathcal{S}} (y\log p(\bs{x}) + (1-y)\log(1-p(\bs{x}))),
 \end{equation}
-where $\mathcal{S}$ is the training set of size $N$, with $\bs{x}$ as the input of the network and $y\in \{0,1\}$ as the label, $p(\bs{x})$ is the output of the network after the softmax layer, representing the predicted probability of sample $\bs{x}$ being clicked.
+其中 $\mathcal{S}$ 是大小为 $N$ 的训练集，$\bs{x}$ 是网络输入，$y\in \{0,1\}$ 是标签，$p(\bs{x})$ 是网络经过 softmax 层后的输出，表示样本 $\bs{x}$ 被点击的预测概率。
 
 
-\subsection{The structure of Deep Interest Network}
+\subsection{深度兴趣网络结构}
 
-Among all those features of Table \ref{table_feature_set}, user behavior features are critically important and play key roles in modeling user interests in the scenario of e-commerce applications.   
+在表 \ref{table_feature_set} 的所有特征中，用户行为特征至关重要，并在电商应用场景中的用户兴趣建模中发挥关键作用。
 
-Base model obtains a fixed-length representation vector of user interests by pooling all the embedding vectors over the user behavior feature group, as Eq.(\ref{eq:pooling}). This representation vector stays the same for a given user, in regardless of what candidate ads are.
-In this way, the user representation vector with a limited dimension will be a bottleneck to express user's diverse interests.
-To make it capable enough, an easy method is to expand the dimension of embedding vector, which unfortunately will increase the size of learning parameters heavily.
-It will lead to overfitting under limited training data and add the burden of computation and storage, which may not be tolerated for an industrial online system. 
+基础模型通过对用户行为特征组中的所有 embedding 向量进行 pooling，获得用户兴趣的定长表征向量，如式 (\ref{eq:pooling}) 所示。对于给定用户，无论候选广告是什么，该表征向量都保持不变。
+通过这种方式，维度有限的用户表征向量会成为表达用户多样化兴趣的瓶颈。
+为了使其具备足够能力，一个简单方法是扩展 embedding 向量的维度，但这会显著增加学习参数规模。
+在训练数据有限时，这会导致过拟合，并增加计算和存储负担，而工业级在线系统可能无法承受这些开销。
 
 %As discussed above, when visiting e-commerce sites, users are often interested in many kinds of goods. 
 %In other words, user interests are diverse.  
@@ -124,18 +124,18 @@ It will lead to overfitting under limited training data and add the burden of co
 %Unfortunately, high dimension of embedding vectors will increase the size of learning parameters heavily.
 %It will lead to overfitting under limited training data and add the burden of computation and storage, which may not be tolerated for an industrial online system.
 
-Is there an elegant way to represent user's diverse interests in one vector under limited dimension?
-The local activation characteristic of user interests gives us inspiration to design a novel model named deep interest network(DIN).
-Imagine when the young mother mentioned above in section \ref{sec:bg} visits the e-commerce site, she finds the displayed new handbag cute and clicks it.
-Let's dissect the driving force of click action. 
-The displayed ad hits the related interests of this young mother by soft-searching her historical behaviors and finding that she had browsed similar goods of tote bag and leather handbag recently.  
-In other words, behaviors related to displayed ad greatly contribute to the click action.  
-DIN simulates this process by paying attention to the representation of locally activated interests w.r.t. given ad.
-Instead of expressing all user's diverse interests with the same vector, DIN adaptively calculate the representation vector of user interests by taking into consideration the relevance of historical behaviors w.r.t. candidate ad.
-This representation vector varies over different ads.         
+是否存在一种优雅方式，能够在有限维度下用一个向量表示用户的多样化兴趣？
+用户兴趣的局部激活特征启发我们设计了一种名为深度兴趣网络 (DIN) 的新模型。
+设想第 \ref{sec:bg} 节中提到的年轻母亲访问电商网站时，看到展示的新手提包很可爱并点击了它。
+我们分析这一点击行为的驱动力。
+所展示的广告通过软搜索她的历史行为，并发现她近期浏览过相似的托特包和皮质手提包商品，从而命中了这位年轻母亲的相关兴趣。
+换言之，与展示广告相关的行为对点击动作有很大贡献。
+DIN 通过关注相对于给定广告的局部激活兴趣表征来模拟这一过程。
+DIN 不使用同一个向量表达用户的全部多样化兴趣，而是考虑历史行为相对于候选广告的相关性，自适应计算用户兴趣表征向量。
+该表征向量会随广告不同而变化。
 
-The right part of Fig.\ref{model_arch} illustrates the architecture of DIN. 
-Compared with base model, DIN introduces a novel designed local activation unit and maintains the other structures the same.  Specifically, activation units are applied on the user behavior features, which performs as a weighted sum pooling to adaptively calculate user representation $\bs{v}_U$ given a candidate ad $A$, as shown in Eq.(\ref{eq:attention})
+图 \ref{model_arch} 右侧展示了 DIN 的架构。
+与基础模型相比，DIN 引入了新设计的局部激活单元，并保持其他结构不变。具体而言，激活单元应用于用户行为特征，在给定候选广告 $A$ 时执行加权求和池化，以自适应计算用户表征 $\bs{v}_U$，如式 (\ref{eq:attention}) 所示。
 
 
 %By simulating this process, we   
@@ -162,15 +162,15 @@ Compared with base model, DIN introduces a novel designed local activation unit 
 \end{equation}
 \end{small}
 }
-where $\{\bs{e}_1, \bs{e}_2, ..., \bs{e}_H\}$ is the list of embedding vectors of behaviors of user $U$ with length of $H$, $\bs{v}_A$ is the embedding vector of ad $A$. In this way, $\bs{v}_U(A)$ varies over different ads. $a(\cdot)$ is a feed-forward network with output as the activation weight, as illustrated in Fig.\ref{model_arch}. Apart from the two input embedding vectors, $a(\cdot)$ adds the out product of them to feed into the subsequent network, which is an explicit knowledge to help relevance   modeling.   
+其中 $\{\bs{e}_1, \bs{e}_2, ..., \bs{e}_H\}$ 是用户 $U$ 的行为 embedding 向量列表，长度为 $H$，$\bs{v}_A$ 是广告 $A$ 的 embedding 向量。通过这种方式，$\bs{v}_U(A)$ 会随广告不同而变化。$a(\cdot)$ 是一个前馈网络，其输出作为激活权重，如图 \ref{model_arch} 所示。除两个输入 embedding 向量外，$a(\cdot)$ 还加入它们的外积并输入后续网络，这是一种有助于相关性建模的显式知识。
 
-Local activation unit of Eq.(\ref{eq:attention}) shares similar ideas with attention methods which are developed in NMT task\cite{bengio:attention}.
-However different from traditional attention method, the constraint of $\sum_i w_i = 1$ is relaxed in Eq.(\ref{eq:attention}), aiming to reserve the intensity of user interests. 
-That is, normalization with softmax on the output of $a(\cdot)$ is abandoned.
-Instead, value of $\sum_i w_i$ is treated as an approximation of the intensity of activated user interests to some degree.   
-For example, if one user's historical behaviors contain 90\% clothes and 10\% electronics. 
-Given two candidate ads of T-shirt and phone, T-shirt activates most of the historical behaviors belonging to clothes and may get larger value of $\bs{v}_U$ (higher intensity of interest) than phone. 
-Traditional attention methods lose the resolution on the numerical scale of $\bs{v}_U$ by normalizing of the output of $a(\cdot)$. 
+式 (\ref{eq:attention}) 中的局部激活单元与 NMT 任务中发展的注意力方法 \cite{bengio:attention} 具有相似思想。
+然而，与传统注意力方法不同，式 (\ref{eq:attention}) 放宽了 $\sum_i w_i = 1$ 约束，目的是保留用户兴趣强度。
+也就是说，我们舍弃了对 $a(\cdot)$ 输出进行 softmax 归一化。
+相反，$\sum_i w_i$ 的值在一定程度上被视为激活用户兴趣强度的近似。
+例如，如果某个用户的历史行为中 90\% 是服装，10\% 是电子产品。
+给定 T 恤和手机两个候选广告，T 恤会激活大多数属于服装的历史行为，并可能比手机得到更大的 $\bs{v}_U$ 值，即更高的兴趣强度。
+传统注意力方法通过归一化 $a(\cdot)$ 的输出，会丢失 $\bs{v}_U$ 数值尺度上的分辨率。
 %Taking the original output of $a(\cdot)$  as activation score can be a simple way to maintain the intensity of interest, which helps making use of user historical behavior data more sufficiently.
 
 
@@ -180,13 +180,13 @@ Traditional attention methods lose the resolution on the numerical scale of $\bs
 %Value of representation vector $\bs{v}_U$ given T-shirt will be larger than given iphone.
 %Indeed, taking the original output of $a(\cdot)$  as activation weight can be a simple way to maintain the intensity of interest, which helps us making use of user historical behavior more sufficiently.
 
-We have tried LSTM to model user historical behavior data in the sequential manner.
-But it shows no improvement. 
+我们尝试过用 LSTM 以序列方式建模用户历史行为数据。
+但它没有带来提升。
 %But it makes little difference. 
-Different from text which is under the constraint of grammar in NLP task, the sequence of user historical behaviors may contain multiple concurrent interests.
-Rapid jumping and sudden ending over these interests causes the sequence data of user behaviors to seem to be noisy.
-A possible direction is to design special structures to model such data in a sequence way.
-We leave it for future research.  
+不同于 NLP 任务中受语法约束的文本，用户历史行为序列可能包含多个并发兴趣。
+这些兴趣之间的快速跳转和突然终止会使用户行为序列数据显得有噪声。
+一个可能方向是设计特殊结构，以序列方式建模这类数据。
+我们将其留作未来研究。
 
 
 %Meanwhile, user behavior is not only affected by his diverse interests but also depends on the results our system display. 
@@ -208,13 +208,13 @@ We leave it for future research.
 %To the best of our knowledge, DIN is the first model which follows both of the two structures of user behavior data in CTR prediction tasks at the same time.
 %\subsection{Mini-batch Aware Regularization Technique}
 
-\section{Training Techniques}
-In the advertising system in Alibaba, numbers of goods and users scale up to hundreds of millions.  
+\section{训练技术}
+在阿里巴巴广告系统中，商品和用户数量规模达到数亿。
 %There are billion kinds of goods in Alibaba, and our advertising system needs to serve more than hundred million users one day.
-Practically, training industrial deep networks with large scale sparse input features is of great challenge.
-In this section, we introduce two important techniques which are proven to be helpful in practice. 
+实际中，使用大规模稀疏输入特征训练工业级深度网络具有很大挑战。
+本节介绍两项在实践中被证明有帮助的重要技术。
 
-\subsection{Mini-batch Aware Regularization}
+\subsection{Mini-batch Aware 正则化}
 
 %In order to capture more specific interests of users, we typically introduce billions of fine-grained ids to describe the users' behaviors. These sparse and high dimensional features may lead to severe overfitting problem.
 %{\EDIT why these feature would cause overfitting?(1 more parameter ; 2 less times)}
@@ -229,12 +229,12 @@ In this section, we introduce two important techniques which are proven to be he
 %However, merely of them are suitable for training network with sparse inputs and billions of parameters.
 
 %Practically overfitting problem is encountered while training industrial networks with large scale sparse input features.
-Overfitting is a critical challenge for training industrial networks. 
-For example, with addition of fine-grained features, such as features of $\textsl{goods\_ids}$ with dimensionality of 0.6 billion (including $visited\_goods\_ids$ of user and $goods\_id$ of ad as described in Table \ref{table_feature_set}), model performance falls rapidly after the first epoch during training without regularization, as the dark green line shown in Fig.\ref{fig:adaptive_reg} in later section \ref{sec:reg}.   
-It is not practical to directly apply traditional regularization methods, such as $\ell_2$ and $\ell_1$ regularization, on training networks with sparse inputs and hundreds of millions of parameters.
-Take $\ell_2$ regularization as an example.
-Only parameters of non-zero sparse features appearing in each mini-batch needs to be updated in the scenario of SGD based optimization methods without regularization. 
-However, when adding $\ell_2$ regularization it needs to calculate L2-norm over the whole parameters for each mini-batch, which leads to extremely heavy computations and is unacceptable with parameters scaling up to hundreds of millions.        
+过拟合是训练工业级网络的关键挑战。
+例如，加入细粒度特征后，如维度为 6 亿的 $\textsl{goods\_ids}$ 特征，包括表 \ref{table_feature_set} 中描述的用户 $visited\_goods\_ids$ 和广告 $goods\_id$，如果训练时不使用正则化，模型性能会在第一个 epoch 后迅速下降，如后文第 \ref{sec:reg} 节图 \ref{fig:adaptive_reg} 中的深绿色曲线所示。
+对于稀疏输入且包含数亿参数的网络，直接使用传统正则化方法并不现实，例如 $\ell_2$ 和 $\ell_1$ 正则化。
+以 $\ell_2$ 正则化为例。
+在没有正则化的基于 SGD 的优化方法中，每个 mini-batch 只需要更新出现的非零稀疏特征参数。
+然而，加入 $\ell_2$ 正则化后，每个 mini-batch 都需要在全部参数上计算 L2-norm，这会产生极重的计算开销，当参数规模达到数亿时不可接受。
 %Original $\ell_2$ regularization needs to calculated L2-norm over the whole parameters on each mini-batch, which leads to extremely heavy computations and is unacceptable in our situation. 
 
 \begin{figure}[!ht]
@@ -242,16 +242,16 @@ However, when adding $\ell_2$ regularization it needs to calculate L2-norm over 
 \centering
 %\includegraphics[height=4.5in, width=5in,keepaspectratio]{images/omni/system}
 \includegraphics[height=1.8in, width=2.2in,keepaspectratio]{images/omni/dice_activation}
-\caption{Control function of PReLU and Dice.}
+\caption{PReLU 和 Dice 的控制函数。}
 \label{figure_dice}
 \vspace{-0.4cm}
 \end{figure} 
 
 
-In this paper, we introduce an efficient mini-batch aware regularizer, which only calculates the L2-norm over the parameters of sparse features appearing in each mini-batch and makes the computation possible.     
-In fact, it is the embedding dictionary that contributes most of the parameters for CTR networks and arises the difficulty of heavy computation. 
-Let $\bs{\mathrm{W}}\in\mathbb{R}^{D\times K}$ denote parameters of the whole embedding dictionary, with $D$ as the dimensionality of the embedding vector and $K$ as the dimensionality of feature space. 
-Expand the $\ell_2$ regularization on $\bs{\mathrm{W}}$ over samples 
+本文提出了一种高效的 mini-batch aware 正则化器，它只对每个 mini-batch 中出现的稀疏特征参数计算 L2-norm，从而使计算可行。
+事实上，CTR 网络的大部分参数来自 embedding 字典，也正是它带来了沉重计算的困难。
+令 $\bs{\mathrm{W}}\in\mathbb{R}^{D\times K}$ 表示整个 embedding 字典的参数，其中 $D$ 是 embedding 向量维度，$K$ 是特征空间维度。
+在样本上展开 $\bs{\mathrm{W}}$ 的 $\ell_2$ 正则化：
 %\begin{equation}
 %\label{eq:batch}
 %\sum_{i=1}^{n_{dj}} \frac{I_{id}}{n_{dj}}w_d^2
@@ -264,34 +264,34 @@ L_2(\bs{\mathrm{W}}) &= \|\bs{\mathrm{W}}\|_2^2 = \sum_{j=1}^{K}\|\bs{w}_j\|_2^2
 \end{split}
 \end{equation}
 \end{footnotesize}
-where $\bs{w}_j\in\mathbb{R}^{D}$ is the $j$-th embedding vector,
+其中 $\bs{w}_j\in\mathbb{R}^{D}$ 是第 $j$ 个 embedding 向量，
 %which corresponding to the number of feature IDs in our applications.
-$I(\bs{x}_j\neq0)$ denotes if the instance $\bs{x}$ has the feature id $j$, and $n_j$ denotes the number of occurrence for feature id $j$ in all samples. %Here we use $I(\cdot)$ as the indicator function.
+$I(\bs{x}_j\neq0)$ 表示样本 $\bs{x}$ 是否具有特征 id $j$，$n_j$ 表示特征 id $j$ 在所有样本中的出现次数。%Here we use $I(\cdot)$ as the indicator function.
 %When applying the gradient descent optimization on mini-batches, the regularization is transformed into
-Eq.(\ref{eq:batch}) can be transformed into Eq.(\ref{eq:minibatch}) in the mini-batch aware manner 
+式 (\ref{eq:batch}) 可以按 mini-batch aware 方式转换为式 (\ref{eq:minibatch})：
 \begin{small}
 \begin{equation}
 \label{eq:minibatch}
 L_2(\bs{\mathrm{W}}) = \sum_{j=1}^{K}\sum_{m=1}^{B}\sum_{(\bs{x},y)\in\mathcal{B}_m}\frac{I(\bs{x}_j\neq 0)}{n_{j}}\|\bs{w}_j\|_2^2,
 \end{equation}
 \end{small}
-where $B$ denotes the number of mini-batches, $\mathcal{B}_m$ denotes the $m$-th mini-batch.
+其中 $B$ 表示 mini-batch 的数量，$\mathcal{B}_m$ 表示第 $m$ 个 mini-batch。
 %To simplify the computation, 
-Let $\alpha_{mj} = \max_{(\bs{x},y)\in\mathcal{B}_m} I(\bs{x}_j\neq0)$
+令 $\alpha_{mj} = \max_{(\bs{x},y)\in\mathcal{B}_m} I(\bs{x}_j\neq0)$
 %{\small
 %\begin{equation}
 %\alpha_{mj} = \max_{(\bs{x},y)\in\mathcal{B}_m} I(\bs{x}_j\neq0),
 %\end{equation}}
-denote if there is at least one instance having the feature id $j$ in mini-batch $\mathcal{B}_m$.
-Then Eq.(\ref{eq:minibatch}) can be approximated by
+表示 mini-batch $\mathcal{B}_m$ 中是否至少有一个样本包含特征 id $j$。
+则式 (\ref{eq:minibatch}) 可以近似为：
 \begin{small}
 \begin{equation}
 \label{eq:approx}
 L_2(\bs{\mathrm{W}})\approx\sum_{j=1}^{K} \sum_{m=1}^{B}  \frac{\alpha_{mj}}{n_j}\|\bs{w}_j\|_2^2.
 \end{equation}
 \end{small}
-In this way, we derive an approximated mini-batch aware version of $\ell_2$ regularization.
-For the $m$-th mini-batch, the gradient w.r.t. the embedding weights of feature $j$ is
+通过这种方式，我们推导出了 $\ell_2$ 正则化的近似 mini-batch aware 版本。
+对于第 $m$ 个 mini-batch，关于特征 $j$ 的 embedding 权重的梯度为：
 %\begin{equation}	
 %\scalebox{0.9}{
 %\parbox{0.37\textwidth}{
@@ -316,7 +316,7 @@ For the $m$-th mini-batch, the gradient w.r.t. the embedding weights of feature 
     \right],
 \end{equation}
 \end{small}
-in which only parameters of features appearing in $m$-th mini-batch participate in the computation of regularization. 
+其中只有出现在第 $m$ 个 mini-batch 中的特征参数参与正则化计算。
 
 %Different from the regularization in~\cite{difacto}, our approach imposes more penalty on long-tail features(which is hard to learn) of lower frequency than frequent $goods\_id$(which may reflect user interests confidently). 
 %Experiments show that our approach outperforms other regularization methods, like dropout.
@@ -403,7 +403,7 @@ in which only parameters of features appearing in $m$-th mini-batch participate 
 %\end{comment}
 
 
-\subsection{Data Adaptive Activation Function}
+\subsection{数据自适应激活函数}
 %{\EDIT
 %In order to make DIN to be more suitable for industrial-scale net sparse input, besides the design of net structure and choice of input, we propose a new activation function to accelerate the convergence.
 
@@ -412,7 +412,7 @@ in which only parameters of features appearing in $m$-th mini-batch participate 
 
 
 
-PReLU \cite{ms:prelu} is a commonly used activation function
+PReLU \cite{ms:prelu} 是一种常用激活函数：
 \begin{small}
 \begin{equation}
 f(s) = \begin{cases}
@@ -422,22 +422,22 @@ f(s) = \begin{cases}
      = ~ p(s) \cdot s + (1-p(s))\cdot \alpha s,   
 \end{equation}
 \end{small}
-where $s$ is one dimension of the input of activation function $f(\cdot)$ and $p(s) = I(s>0)$ is an indicator function which controls $f(s)$ to switch between two channels of $f(s)=s$ and $f(s)=\alpha s$. $\alpha$ in the second channel is a learning parameter. 
-Here we refer to $p(s)$ as the control function. The left part of Fig.\ref{figure_dice} plots the control function of PReLU.
-PReLU takes a hard rectified point with value of $0$, which may be not suitable when the inputs of each layer follow different distributions. 
-Take this into consideration, we design a novel data adaptive activation function named \textsl{\textbf{Dice}},
+其中 $s$ 是激活函数 $f(\cdot)$ 输入的一维，$p(s) = I(s>0)$ 是指示函数，用于控制 $f(s)$ 在 $f(s)=s$ 和 $f(s)=\alpha s$ 两个通道之间切换。第二个通道中的 $\alpha$ 是学习参数。
+这里我们将 $p(s)$ 称为控制函数。图 \ref{figure_dice} 左侧绘制了 PReLU 的控制函数。
+PReLU 采用值为 $0$ 的硬整流点，当各层输入服从不同分布时，这可能并不合适。
+考虑到这一点，我们设计了一种新的数据自适应激活函数，命名为 \textsl{\textbf{Dice}}：
 \begin{equation}
 f(s) = p(s) \cdot s + (1-p(s))\cdot \alpha s, \ \ p(s) = \frac{1}{ 1 + e^{- \frac{s - E[s]}{\sqrt{Var[s] + \epsilon}}}}
 \end{equation}
-with the control function to be plotted in the right part of Fig.\ref{figure_dice}.
-In the training phrase, $E[s]$ and $Var[s]$ is the mean and variance of input in each mini-batch.  
-In the testing phrase, $E[s]$ and $Var[s]$ is calculated by moving averages $E[s]$ and $Var[s]$ over data. 
-$\epsilon$ is a small constant which is set to be $10^{-8}$ in our practice.
+其控制函数绘制在图 \ref{figure_dice} 右侧。
+在训练阶段，$E[s]$ 和 $Var[s]$ 是每个 mini-batch 中输入的均值和方差。
+在测试阶段，$E[s]$ 和 $Var[s]$ 由数据上的移动平均 $E[s]$ 和 $Var[s]$ 计算得到。
+$\epsilon$ 是一个很小的常数，在我们的实践中设为 $10^{-8}$。
 
-Dice can be viewed as a generalization of PReLu.
-The key idea of Dice is to adaptively adjust the rectified point according to distribution of input data, whose value is set to be the mean of input.
-Besides, Dice controls smoothly to switch between the two channels. 
-When $E(s)=0$ and $Var[s]=0$, Dice degenerates into PReLU. 
+Dice 可以看作 PReLU 的一种推广。
+Dice 的核心思想是根据输入数据分布自适应调整整流点，其值设为输入均值。
+此外，Dice 以平滑方式控制两个通道之间的切换。
+当 $E(s)=0$ 且 $Var[s]=0$ 时，Dice 退化为 PReLU。
 
 
 
