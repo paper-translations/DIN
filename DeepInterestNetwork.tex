@@ -67,7 +67,7 @@
 
 \begin{document}
 
-\title{Deep Interest Network for Click-Through Rate Prediction}
+\title{用于点击率预测的深度兴趣网络}
 
 \author{Guorui Zhou, Chengru Song, Xiaoqiang Zhu\texorpdfstring{\\}{,}
   Ying Fan, Han Zhu, Xiao Ma, Yanghui Yan, Junqi Jin, Han Li, Kun Gai}
@@ -80,19 +80,19 @@
 \begin{abstract}
 %Click-through rate prediction is an essential task in online advertising. Recently deep learning based models have been proposed, which follow a similar Embedding\&MLP paradigm. In these methods large scale sparse input features are first mapped into low dimensional embedding vectors, and then transformed into fixed-length vectors in a group-wise manner, finally concatenated together to fed into a multilayer perceptron (MLP) to learn the nonlinear relations among features. In this way, user features are compressed into a fixed-length representation vector, in regardless of what candidate ad features are. However, in applications with rich historical behaviors, the user representation vector with a limited size will be a bottleneck to express multiple concurrent interests of users, limiting the effectiveness of Embedding\&MLP methods.In this paper, we propose a novel model: Deep Interest Network (DIN) which tackles this challenge by designing an attention unit to adaptively learn the representation of user interests from historical behaviors with respect to a certain ad. This representation vector varies over different ads, improving the expressive ability of model greatly. Besides, we develop two techniques: mini-batch aware regularization and data adaptive activation function which can help training industrial deep networks with hundreds of millions of parameters. Experiments on two public datasets as well as an internal dataset collected from productive system demonstrate the effectiveness of proposed approaches, which achieves superior performance compared with state-of-the-art methods. DIN now has been successfully deployed in the productive displaying system in Alibaba, contributing up to 15\% CTR promotion which is a significant improvement to the business.
 
-Click-through rate prediction is an essential task in industrial applications, such as online advertising.
-Recently deep learning based models have been proposed, which follow a similar Embedding\&MLP paradigm.
-In these methods large scale sparse input features are first mapped into low dimensional embedding vectors, and then transformed into fixed-length vectors in a group-wise manner, finally concatenated together to fed into a multilayer perceptron (MLP) to learn the nonlinear relations among features.
-In this way, user features are compressed into a fixed-length representation vector, in regardless of what candidate ads are.
-The use of fixed-length vector will be a bottleneck, which brings difficulty  for Embedding\&MLP methods to capture user's diverse interests effectively from rich historical behaviors.
+点击率预测是在线广告等工业应用中的核心任务。
+近年来，研究者提出了基于深度学习的模型，这些模型遵循相似的 Embedding\&MLP 范式。
+在这些方法中，大规模稀疏输入特征首先被映射为低维 embedding 向量，然后按组转换为定长向量，最后拼接后输入多层感知机 (MLP)，以学习特征之间的非线性关系。
+通过这种方式，无论候选广告是什么，用户特征都会被压缩成一个定长表征向量。
+定长向量会形成瓶颈，使 Embedding\&MLP 方法难以从丰富的历史行为中有效捕获用户的多样化兴趣。
 %The use of fixed-length vector will be a bottleneck to express user's diverse interests. This brings difficulty   for Embedding\&MLP methods to capture user's diverse interests effectively from rich historical behaviors.
 %The use of fixed-length vector will be a bottleneck to express user's diverse interests, limiting the effectiveness of Embedding\&MLP methods to capture user interests from rich historical behaviors. 
-In this paper, we propose a novel model: Deep Interest Network (DIN) which tackles this challenge by designing a local activation unit to adaptively learn the representation of user interests from historical behaviors with respect to a certain ad.
-This representation vector varies over different ads, improving the expressive ability of model greatly.
-Besides, we develop two techniques: mini-batch aware regularization and data adaptive activation function which can help training industrial deep networks with hundreds of millions of parameters.
-Experiments on two public datasets as well as an Alibaba real production dataset with over 2 billion samples demonstrate the effectiveness of proposed approaches, which achieve superior performance compared with state-of-the-art methods.
+本文提出了一种新的模型：深度兴趣网络 (DIN)。DIN 通过设计局部激活单元，针对给定广告从历史行为中自适应学习用户兴趣表征，从而应对这一挑战。
+该表征向量会随广告不同而变化，显著提升了模型的表达能力。
+此外，我们提出了两项技术：mini-batch aware 正则化和数据自适应激活函数，它们有助于训练包含数亿参数的工业级深度网络。
+在两个公开数据集以及包含超过 20 亿样本的阿里巴巴真实生产数据集上的实验表明，所提方法有效，并且相较 SOTA 方法取得了更优性能。
 %DIN now has been successfully deployed in the productive displaying system in Alibaba, contributing up to 10.0\% CTR promotion which is a significant improvement to the business.
-DIN now has been successfully deployed in the online display advertising system in Alibaba, serving the main traffic. 
+DIN 现已成功部署于阿里巴巴在线展示广告系统，并服务主流量。
 
 
 %Recently a number of deep learning based models have been proposed, which follow a similar Embedding\&MLP paradigm. 
@@ -149,7 +149,7 @@ DIN now has been successfully deployed in the online display advertising system 
 \ccsdesc[500]{Information systems~Display advertising}
 \ccsdesc[500]{Information systems~Recommender systems}
 
-\keywords{Click-Through Rate Prediction, Display Advertising, E-commerce}
+\keywords{点击率预测, 展示广告, 电子商务}
 %\keywords{Click-Through Rate Prediction, Display Advertising, E-commerce, User's Diverse Interests, Training Industrial Deep Network}
 \maketitle
 

@@ -1,4 +1,4 @@
-\section{Introduction}
+\section{引言}
 %Display advertising business brings billions dollars income yearly in Alibaba.
 %<<<<<<< HEAD
 %eCPM (expective cost per mille) which is the product of the bid price and CTR (click-through rate).
@@ -13,16 +13,16 @@
 %Let's regard the embedding vector as a vertex in a high dimensionality. The intensity of interest for each vertex distributed in this space is various and arrives at peak near the embedding of goods that user has interest. The surface plot of the interest intensity over this space is not a single peak, because user's interest is \textbf{diverse}, so it's multi-peak. Actually, different peaks(that is different set of user interests) take effect when faced with different candidate goods, which reflects the \textbf{local activation} characteristic. For example, a swimmer will click a recommended goggle mostly due to the purchase of bathing suit but not the books in her last week's shopping list.
 %However, traditional Embedding\&MLP models learns same user vector for different candidate ads, which is
 %=======
-In cost-per-click (CPC) advertising system, advertisements are ranked by the eCPM (effective cost per mille), which is the product of the bid price and CTR (click-through rate), and CTR needs to be predicted by the system. Hence, the performance of CTR prediction model has a direct impact on the final revenue and plays a key role in the advertising system. Modeling CTR prediction has received much attention from both research and industry community.
+在按点击付费 (CPC) 广告系统中，广告按照 eCPM (effective cost per mille) 排序，eCPM 是出价与 CTR (click-through rate) 的乘积，而 CTR 需要由系统预测。因此，CTR 预测模型的性能会直接影响最终收入，并在广告系统中起关键作用。CTR 预测建模已经受到学术界和工业界的广泛关注。
 
-Recently, inspired by the success of deep learning in computer vision~\cite{huang2016densely} and natural language processing~\cite{bengio:attention}, deep learning based methods have been proposed for CTR prediction task \cite{deep_crossing,youtube:recommend,deep_intent,widedeep}.
-These methods follow a similar Embedding\&MLP paradigm: large scale sparse input features are first mapped into low dimensional embedding vectors, and then transformed into fixed-length vectors in a group-wise manner, finally concatenated together to fed into fully connected layers (also known as multilayer perceptron, MLP) to learn the nonlinear relations among features. 
-Compared with commonly used logistic regression model \cite{ftrl}, these deep learning methods can reduce a lot of feature engineering jobs and enhance the model capability greatly. For simplicity, we name these methods Embedding\&MLP in this paper, which now have become popular on CTR prediction task.
+近年来，受深度学习在计算机视觉~\cite{huang2016densely} 和自然语言处理~\cite{bengio:attention} 中成功的启发，基于深度学习的方法被用于 CTR 预测任务 \cite{deep_crossing,youtube:recommend,deep_intent,widedeep}。
+这些方法遵循相似的 Embedding\&MLP 范式：大规模稀疏输入特征首先被映射为低维 embedding 向量，然后按组转换为定长向量，最后拼接后输入全连接层，也称为多层感知机 (MLP)，以学习特征之间的非线性关系。
+与常用的逻辑回归模型 \cite{ftrl} 相比，这些深度学习方法可以减少大量特征工程工作，并显著增强模型能力。为简洁起见，本文将这类方法称为 Embedding\&MLP，它们目前已成为 CTR 预测任务中的常用结构。
 
-However, the user representation vector with a limited dimension in Embedding\&MLP methods will be a bottleneck to express user's diverse interests. %, limiting the effectiveness of model.
-Take display advertising in e-commerce site as an example. Users might be interested in different kinds of goods simultaneously when visiting the e-commerce site. That is to say, user interests are \textsl{\textbf{diverse}}. When it comes to CTR prediction task, user interests are usually captured from user behavior data. 
-Embedding\&MLP methods learn the  representation of all interests for a certain user by transforming the embedding vectors of user behaviors into a fixed-length vector, which is in an euclidean space where all users' representation vectors are. 
-In other words, diverse interests of the user are compressed into a fixed-length vector, which limits the expressive ability of Embedding\&MLP methods. 
+然而，在 Embedding\&MLP 方法中，维度有限的用户表征向量会成为表达用户多样化兴趣的瓶颈。%, limiting the effectiveness of model.
+以电商网站中的展示广告为例。用户访问电商网站时，可能同时对多类商品感兴趣。也就是说，用户兴趣是 \textsl{\textbf{多样化}} 的。在 CTR 预测任务中，用户兴趣通常从用户行为数据中捕获。
+Embedding\&MLP 方法将用户行为的 embedding 向量转换为定长向量，从而学习某个用户所有兴趣的表征，该向量位于所有用户表征向量共同构成的欧氏空间中。
+换言之，用户的多样化兴趣被压缩到一个定长向量中，这限制了 Embedding\&MLP 方法的表达能力。
 %Embedding\&MLP methods learn the  representation of all interests for a certain user by transforming the embedding vectors of user behaviors into a fixed-length vector.
 %In other words, diverse interests of the user are compressed into this fixed-length vector, which limits the expressive ability of Embedding\&MLP methods. 
 %It is difficult to compress all the interests of a certain user into a fixed-length vector. 
@@ -30,8 +30,8 @@ In other words, diverse interests of the user are compressed into a fixed-length
 %The use of fixed-length vector to compress all the interests  
 %gives the rein to the expressing, and Embedding\&MLP methods may not rise to the challenge: capturing diverse interests of user from her behaviors. 
 %It is difficult to compress all the interests of user into a fixed-length vector. 
-To make the representation capable enough for expressing user's diverse interests,  the dimension of the fixed-length vector needs to be largely expanded. 
-Unfortunately, it will dramatically enlarge the size of learning parameters and aggravate the risk of overfitting under limited data. Besides, it adds the burden of computation and storage, which may not be tolerated for an industrial online system. 
+为了让该表征足以表达用户的多样化兴趣，需要大幅扩展定长向量的维度。
+遗憾的是，这会显著增大学习参数规模，并在数据有限时加剧过拟合风险。此外，它还会增加计算和存储负担，而工业级在线系统可能无法承受这些开销。
 %Thus the use of a same fixed-length vector turns be a bottleneck to represent users' diverse interests. 
 
 %However, in applications with rich user behaviors these Embedding\&MLP models are lack of capturing the characteristic of data and leaves room for further improvement. Take display advertising in e-commerce site as an example. Users might be interested in different kinds of goods concurrently when visiting the e-commerce site. In other words, user interests are \textsl{\textbf{diverse}}, which are usually captured from rich historical behavior data. Traditional Embedding\&MLP models learn the same representation of all interests for a certain user by transforming the embedding vectors of user behaviors into a fixed-length vector. In this way, dimension of the fixed-length vector needs to be largely expanded to make it capable enough for containing information about all interests. However, it will increase the size of learning parameters heavily and aggravate the risk of overfitting under limited data. %, which gives challenge to the generalization ability of model. 
@@ -39,18 +39,18 @@ Unfortunately, it will dramatically enlarge the size of learning parameters and 
  
 %However, these Embedding\&MLP models ignore some important matters, that user's interests are \textbf{diverse} and \textbf{local activation}. Each user may come to Alibaba with several shopping intention. For example, a young mother's browsing history contains T-shirts, leather handbags, shoes, children's coats, etc. reflecting her diverse interests.	In the perspective of model structure,these traditional Embedding\&MLP models learn the same interest representation vector with fixed-length for different given candidate goods. In this way, the dimension of user's vector needs to be largely expanded to reflect diverse interests in one vector. However high dimensional user's vector will aggravate the risk of overfitting under limited data, which gives a challenge to the generalization ability of model. At the same time, it improves the complexity of computation to a large extent, which is not feasible in online advertising and recommendation system of e-commence industry.Thus the use of a fixed-length user vector will be a bottleneck to represent diverse interests of users when they meet different candidate goods.
 
-On the other hand, it is not necessary to compress all the diverse interests of a certain user into the same vector when predicting a candidate ad because only part of user's interests will influence his/her action (to click or not to click). For example, a female swimmer will click a recommended goggle mostly due to the bought of bathing suit rather than the shoes in her last week's shopping list. 
-Motivated by this, we propose a novel model: Deep Interest Network (DIN), which adaptively calculates the representation vector of user interests by taking into consideration the relevance of historical behaviors given a candidate ad. 
-By introducing a local activation unit, DIN pays attentions to the related user interests by soft-searching for relevant parts of historical behaviors and takes a weighted sum pooling to obtain the representation of user interests with respect to the candidate ad.  
-Behaviors with higher relevance to the candidate ad get higher activated weights and dominate the representation of user interests. 
-We visualize this phenomenon in the experiment section. 
-In this way, the representation vector of user interests varies over different ads, which improves the expressive ability of model under limited dimension and enables DIN to better capture user's diverse interests.
+另一方面，在预测候选广告时，并不需要把某个用户的全部多样化兴趣都压缩到同一个向量中，因为只有部分用户兴趣会影响其行为，即点击或不点击。例如，一位女性游泳爱好者点击推荐的泳镜，主要可能是因为她购买过泳衣，而不是因为她上周购物清单中的鞋子。
+受此启发，我们提出了一种新的模型：深度兴趣网络 (DIN)。给定候选广告时，DIN 会考虑历史行为与该广告之间的相关性，自适应计算用户兴趣表征向量。
+通过引入局部激活单元，DIN 对历史行为中的相关部分进行软搜索，关注相关用户兴趣，并采用加权求和池化得到相对于候选广告的用户兴趣表征。
+与候选广告相关性更高的行为会获得更高的激活权重，并主导用户兴趣表征。
+我们在实验部分可视化了这一现象。
+通过这种方式，用户兴趣表征向量会随广告不同而变化，这提升了有限维度下的模型表达能力，并使 DIN 能够更好地捕获用户的多样化兴趣。
 %enables DIN to better capture the characteristic of user behavior data and improve the expressive ability of model under limited dimension.
 
 %When a concrete goods comes into user's view, only part of user's interests will be activated and influence his action (to click or not to click). Which means when users' behaviors are used to represent their interests, only a part of user's historical behaviors contributes to each click. For example, a young mother will click a recommended goggle mostly due to the bought of bathing suit rather than the shoes in her last week's shopping list. Motivated by this, we propose a novel model: Deep Interest Network (DIN), which tries to simulates a concrete goods activating user's interests by soft-searching for a part of user's behaviors when predicting CTR of each candidate goods. Instead of directly modeling user's whole diverse interests, DIN pays attention to the locally related interests given the candidate ad(Most of display ads in Alibaba are goods). That is, DIN is divided into two steps: i) DIN employ embedding layer to mapping users' behaviors, which contains users' interests, to the distributed representations. ii) DIN designs an attention-like network structure to locally activate the related behaviors given different candidate ads. Now user's locally related interests with respect to the candidate ads are computed as the average of the embedding vectors of behaviors weighted by activated intensity. Behaviors with higher relevance to the candidate ads get higher activated intensity and dominate user's interest vector. We demonstrate this phenomenon in the experiment section. In this way, a simulation of user's interests being activated by different ads is done in DIN. DIN gets the ability to represent users' different interests with a vector, which varies with candidate ads.
 
-Training industrial deep networks with large scale sparse features is of great challenge. 
-For example, SGD based optimization methods only update those parameters of sparse features appearing in each mini-batch. However, adding with traditional $\ell_2$ regularization, the computation turns to be unacceptable, which needs to calculate L2-norm over the whole parameters (with size scaling up to billions in our situation) for each mini-batch. In this paper, we develop a novel mini-batch aware regularization where only parameters of non-zero features appearing in each mini-batch participate in the calculation of L2-norm, making the computation acceptable. Besides, we design a data adaptive activation function, which generalizes commonly used PReLU\cite{ms:prelu} by adaptively adjusting the rectified point w.r.t. distribution of inputs and is shown to be helpful for training industrial networks with sparse features.
+使用大规模稀疏特征训练工业级深度网络具有很大挑战。
+例如，基于 SGD 的优化方法只更新每个 mini-batch 中出现的稀疏特征参数。然而，加入传统 $\ell_2$ 正则化后，计算开销会变得不可接受，因为每个 mini-batch 都需要在全部参数上计算 L2-norm，而在我们的场景中参数规模可达数十亿。本文提出了一种新的 mini-batch aware 正则化，只有每个 mini-batch 中出现的非零特征参数参与 L2-norm 计算，从而使计算开销可接受。此外，我们设计了一种数据自适应激活函数，它通过根据输入分布自适应调整整流点，推广了常用的 PReLU\cite{ms:prelu}，并被证明有助于训练带稀疏特征的工业级网络。
 
 %By exploiting the the characteristic of sparse 
 %In this paper, we carefully study the characteristic of training deep networks with sparse inputs and develop two practical techniques: mini-batch aware regularization and data adaptive activation function, which is useful to help improving the performance of trained model. 
@@ -61,7 +61,7 @@ For example, SGD based optimization methods only update those parameters of spar
 %Experiments on two public datasets as well as a dataset collected from the online display advertising system in Alibaba demonstrate the effectiveness of proposed approaches, which achieve superior performance compared with state-of-the-art methods on CTR prediction task. DIN trained with the proposed regularization and activation function has been deployed in the display advertising system in Alibaba, contributing up to 10.0\% CTR promotion, which is a significant improvement to the business.
 
 
-The contributions of this paper are summarized as follows:
+本文贡献总结如下：
 %\begin{itemize}
 %\item We point out the diversity of user interests and the use of fixed-length vector will be a bottleneck to express user's diverse interests, as well as propose deep interest network (DIN) to better capture this characteristic. We design interest activation unit in DIN to adaptively learn the representation of user interests from historical behaviors w.r.t. given ads, which can improve the expressive ability of model greatly and better capture user's diverse interests.
 %\item We develop two novel techniques to improve the performance of industrial deep neural networks. We develop a mini-batch aware regularizer to save the heavy computation of regularization on large scale parameters, which is helpful for avoiding overfitting. We design a data adaptive activation function, which generalizes PReLU by considering the distribution of inputs and shows well performance.
@@ -70,9 +70,9 @@ The contributions of this paper are summarized as follows:
 %\end{itemize}
 
 \begin{itemize}
-\item We point out the limit of using fixed-length vector to express user's diverse interests and design a novel deep interest network (DIN) which introduces a local activation unit to adaptively learn the representation of user interests from historical behaviors w.r.t. given ads. DIN can improve the expressive ability of model greatly and better capture the diversity characteristic of user interests. 
-\item We develop two novel techniques to help training industrial deep networks: i) a mini-batch aware regularizer, which saves heavy computation of regularization on deep networks with huge number of parameters and is helpful for avoiding overfitting, ii) a data adaptive activation function, which generalizes PReLU by considering the distribution of inputs and shows well performance.
-\item We conduct extensive experiments on both public and Alibaba datasets. Results verify the effectiveness of proposed DIN and training techniques. Our code\footnote{Experiment code on two public datasets is available on GitHub: https://github.com/zhougr1993/DeepInterestNetwork\label{code}} is publicly available. The proposed approaches have been deployed in the commercial display advertising system in Alibaba, one of world's largest advertising platform, contributing significant improvement to the business. 
+\item 我们指出了使用定长向量表达用户多样化兴趣的局限，并设计了一种新的深度兴趣网络 (DIN)。DIN 引入局部激活单元，针对给定广告从历史行为中自适应学习用户兴趣表征。DIN 能够显著提升模型表达能力，并更好地捕获用户兴趣的多样性特征。
+\item 我们提出了两项新技术来帮助训练工业级深度网络：i) mini-batch aware 正则化器，它节省了在海量参数深度网络上进行正则化的巨大计算开销，并有助于避免过拟合；ii) 数据自适应激活函数，它通过考虑输入分布推广了 PReLU，并表现出良好性能。
+\item 我们在公开数据集和阿里巴巴数据集上进行了广泛实验。结果验证了所提 DIN 和训练技术的有效性。我们的代码\footnote{两个公开数据集上的实验代码可在 GitHub 获取：https://github.com/zhougr1993/DeepInterestNetwork\label{code}} 已公开。所提方法已部署于阿里巴巴商业展示广告系统，该系统是全球最大的广告平台之一，并为业务带来了显著提升。
 %\item deploy DIN in the display advertising system in Alibaba, which holds the largest market share of online advertising in China. DIN shows superior performance and contributes a significant improvement to the business.
 \end{itemize}
 
@@ -84,10 +84,10 @@ The contributions of this paper are summarized as follows:
 
 
 
-In this paper we focus on the CTR prediction modeling in the scenario of display advertising in e-commerce industry. 
-Methods discussed here can be applied in similar scenarios with rich user behaviors, such as personalized recommendation in e-commerce sites, feeds ranking in social networks etc.
+本文聚焦于电商行业展示广告场景下的 CTR 预测建模。
+这里讨论的方法可应用于具有丰富用户行为的类似场景，例如电商网站中的个性化推荐、社交网络中的 feeds 排序等。
 
-The rest of the paper is organized as follows. We discuss related work in section 2 and introduce the background about characteristic of user behavior data in display advertising system of e-commerce site in section 3. Section 4 and 5 describe in detail the design of DIN model as well as two proposed training techniques. We present experiments in section 6 and conclude in section 7. 
+本文其余部分组织如下。第 2 节讨论相关工作，第 3 节介绍电商网站展示广告系统中用户行为数据特征的背景。第 4 节和第 5 节详细描述 DIN 模型设计以及所提出的两项训练技术。第 6 节给出实验，第 7 节总结全文。
 %The rest of the paper is organized as follows. We discuss related work in section 2 and  problem background in section 3. Section 4 and 5 describe in detail the design of DIN model as well as two proposed training techniques. We present experiments in section 6 and conclude in section 7. 
 
 

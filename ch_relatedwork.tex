@@ -1,24 +1,24 @@
-\section{Relatedwork}
-The structure of CTR prediction model has evolved from shallow to deep. At the same time, the number of samples and the dimension of features used in CTR model have become larger and larger. In order to better extract feature relations to improve performance, several works pay attention to the design of model structure.
+\section{相关工作}
+CTR 预测模型的结构已经从浅层发展到深层。与此同时，CTR 模型使用的样本数量和特征维度也越来越大。为了更好地提取特征关系并提升性能，一些工作关注模型结构设计。
 
-As a pioneer work, NNLM \cite{bengio:nnlm} learns distributed representation for each word,
-aiming to avoid curse of dimension in language modeling.
-This method, often referred to as embedding,
-has inspired many natural language models and CTR prediction models that need to handle large-scale sparse inputs.
+作为开创性工作，NNLM \cite{bengio:nnlm} 为每个词学习分布式表征，
+目标是在语言建模中避免维度灾难。
+这种方法通常被称为 embedding，
+启发了许多需要处理大规模稀疏输入的自然语言模型和 CTR 预测模型。
 
-LS-PLM \cite{MLR} and FM \cite{rendle:fm} models can be viewed as a class of networks with one hidden layer, which first 
- employs embedding layer on sparse inputs and then imposes specially designed transformation functions for target fitting, aiming to capture the combination relations among features.
+LS-PLM \cite{MLR} 和 FM \cite{rendle:fm} 模型可以看作一类含有一个隐藏层的网络，它们首先
+ 在稀疏输入上使用 embedding 层，然后施加专门设计的变换函数进行目标拟合，旨在捕获特征之间的组合关系。
 
-Deep Crossing \cite{deep_crossing}, Wide\&Deep Learning \cite{widedeep} and YouTube Recommendation CTR model \cite{youtube:recommend} extend LS-PLM and FM by replacing the transformation function with complex MLP network, which enhances the model capability greatly. PNN\cite{PNN} tries to capture high-order feature interactions by involving a product layer after embedding layer. DeepFM\cite{DeepFM} imposes a factorization machines as "wide" module in Wide\&Deep \cite{widedeep} with no need of feature engineering.
-Overall, these methods follow a similar model structure with combination of embedding layer (for learning the dense representation of sparse features) and MLP (for learning the combination relations of features automatically).
-This kind of CTR prediction model reduces the manual feature engineering jobs greatly. %to a great extent.
-Our base model follows this kind of model structure. 
-However in applications with rich user behaviors, features are often contained with variable-length list of ids, e.g., searched terms or watched videos in YouTube recommender system \cite{youtube:recommend}. These models often transform corresponding list of embedding vectors into a fixed-length vector via sum/average pooling, which causes loss of information.
-The proposed DIN tackles it by adaptively learning the representation vector w.r.t. given ad, improving the expressive ability of model.   
+Deep Crossing \cite{deep_crossing}、Wide\&Deep Learning \cite{widedeep} 和 YouTube Recommendation CTR 模型 \cite{youtube:recommend} 通过用复杂的 MLP 网络替代变换函数来扩展 LS-PLM 和 FM，从而显著增强模型能力。PNN\cite{PNN} 尝试在 embedding 层之后引入 product 层以捕获高阶特征交互。DeepFM\cite{DeepFM} 将因子分解机作为 Wide\&Deep \cite{widedeep} 中的 ``wide'' 模块，无需特征工程。
+总体而言，这些方法遵循相似的模型结构，即结合 embedding 层，用于学习稀疏特征的稠密表征，以及 MLP，用于自动学习特征组合关系。
+这类 CTR 预测模型显著减少了人工特征工程工作。%to a great extent.
+我们的基础模型遵循这类模型结构。
+然而，在具有丰富用户行为的应用中，特征往往包含变长 id 列表，例如 YouTube 推荐系统 \cite{youtube:recommend} 中的搜索词或观看过的视频。这些模型通常通过求和或平均池化将对应的 embedding 向量列表转换为定长向量，这会造成信息损失。
+所提出的 DIN 通过针对给定广告自适应学习表征向量来解决该问题，从而提升模型表达能力。
 
-Attention mechanism originates from Neural Machine Translation (NMT) field \cite{bengio:attention}.
-NMT takes a weighted sum of all the annotations to get an expected annotation and focuses only on information relevant to the generation of next target word.
-A recent work, DeepIntent \cite{deep_intent} applies attention in the context of search advertising. Similar to NMT, they use RNN\cite{rnn} to model text, then learn one global hidden vector to help paying attention on the key words in each query. It is shown that the use of attention can help capturing the main intent of query or ad.
-DIN designs a local activation unit to soft-search for relevant user behaviors and takes a weighted sum pooling to obtain the adaptive representation of user interests with respect to a given ad. The user representation vector varies over different ads, which is different from DeepIntent in which there is no interaction between ad and user.
+注意力机制源于神经机器翻译 (NMT) 领域 \cite{bengio:attention}。
+NMT 对所有注释向量加权求和得到期望注释向量，并只关注与生成下一个目标词相关的信息。
+近期工作 DeepIntent \cite{deep_intent} 将注意力应用于搜索广告场景。与 NMT 类似，他们使用 RNN\cite{rnn} 对文本建模，然后学习一个全局隐藏向量，以帮助关注每个查询中的关键词。结果表明，使用注意力有助于捕获查询或广告的主要意图。
+DIN 设计了局部激活单元来软搜索相关用户行为，并采用加权求和池化来获得相对于给定广告的用户兴趣自适应表征。用户表征向量会随广告不同而变化，这不同于 DeepIntent，后者不存在广告与用户之间的交互。
 
-We make code publicly available, and further show how to successfully deploy DIN in one of the world's largest advertising systems with novel developed techniques for training large scale deep networks with hundreds of millions of parameters. 
+我们公开了代码，并进一步展示了如何借助新开发的技术训练包含数亿参数的大规模深度网络，从而将 DIN 成功部署到全球最大的广告系统之一中。
