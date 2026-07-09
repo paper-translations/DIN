@@ -1,12 +1,12 @@
-\section{Conclusions}
-In this paper, we focus on the task of CTR prediction modeling in the scenario of display advertising in e-commerce industry with rich user behavior data.
-The use of fixed-length representation in traditional deep CTR models is a bottleneck for capturing the diversity of user interests. 
-To improve the expressive ability of model, a novel approach named DIN is designed to activate related user behaviors and obtain an adaptive representation vector for user interests which varies over different ads.    
+\section{结论}
+本文聚焦于电商行业展示广告场景中的 CTR 预测建模任务，该场景具有丰富的用户行为数据。
+在传统深度 CTR 模型中使用定长表征，会成为捕获用户兴趣多样性的瓶颈。
+为了提升模型表达能力，我们设计了一种名为 DIN 的新方法，用于激活相关用户行为，并获得随广告不同而变化的用户兴趣自适应表征向量。
 %soft-searching for a part of user's behaviors to represent user's activated interests with a vector, which varies with candidate ads.\par
 %With exploiting these characteristic sufficiently, we design a novel model named DIN.
 %Besides, we propose a mini-batch aware regularization technique which can help reducing overfitting greatly in our scenario. What's more, we design a mini-batch aware activation function to accelerate convergence of our model. These approaches could be generalized to other industrial deep learning tasks.
-Besides two novel techniques are introduced to help training industrial deep networks and further improve the performance of DIN. They can be easily generalized to other industrial deep learning tasks. 
-DIN now has been deployed in the online display advertising system in Alibaba.  
+此外，本文引入了两项新技术，以帮助训练工业级深度网络，并进一步提升 DIN 的性能。它们可以容易地推广到其他工业深度学习任务。
+DIN 现已部署于阿里巴巴在线展示广告系统。
 %DIN now has been deployed in the productive display advertising system in Alibaba and contributes up to 10.0\% CTR promotion compared with BaseModel, our last productive version, which is a significant improvement to the business.
 %Experiments show that DIN brings more interpretability and achieves better GAUC performance compared with popular Embedding\&MLP model.
 %=======
