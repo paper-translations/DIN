@@ -23,7 +23,7 @@ The statistics of all the above datasets is shown in Table \ref{table:Statistics
 Volume of Alibaba Dataset is much larger than both Amazon and MovieLens, which brings more challenges. 
 
     
-\begin{table}[]
+\begin{table}[!t]
 %\setlength{\belowcaptionskip}{-1cm}
 \caption{Statistics of datasets used in this paper.}
 \small
@@ -97,7 +97,7 @@ RelaImpr = \left(\frac{\text{AUC(measured model)} -0.5}{\text{AUC(base model)} -
 
 
 
-\begin{table}[]
+\begin{table}[!t]
 %\setlength{\belowcaptionskip}{-1cm}
 \caption{Model Coparison on Amazon Dataset and MovieLens Dataset. All the lines calculate RelaImpr by comparing with BaseModel on each dataset respectively.}
 \centering
@@ -141,7 +141,7 @@ Besides, DIN with Dice brings further improvement over DIN, which verifies the e
 
 
 
-\begin{table}[]
+\begin{table}[!t]
 %\setlength{\belowcaptionskip}{-1cm}
 \caption{Best AUCs of BaseModel with different regularizations on Alibaba Dataset corresponding to Fig.\ref{fig:adaptive_reg}. All the other lines calculate RelaImpr by comparing with first line.}
 \small
@@ -205,7 +205,7 @@ It is notable that in commercial advertising systems with hundreds of millions o
 DIN shows great superiority to better understand and make use of the characteristics of user behavior data. 
 Besides, the two proposed techniques further improve model performance and provide powerful help for training large scale industrial deep networks.   
 
-\begin{table}[]
+\begin{table}[!t]
 %\setlength{\belowcaptionskip}{-0.5cm}
 \caption{Model Comparison on Alibaba Dataset with full feature sets. All the lines calculate RelaImpr by comparing with BaseModel. 
 DIN significantly outperforms all the other competitors. Besides, training DIN with our proposed mini-batch aware regularizer and Dice activation function brings further improvements.}
@@ -257,7 +257,7 @@ As expected, behaviors with high relevance to candidate ad are weighted high.
 
 
 %\begin{figure*}[!h]
-\begin{figure}[!h]
+\begin{figure}[!ht]
 \centering
 %\includegraphics[height=3.5in, width=5in, keepaspectratio]{images/omni/attention_timeline_fix.pdf}
 \includegraphics[height=2.5in, width=3.5in, keepaspectratio]{images/omni/attention_timeline_fix.png}

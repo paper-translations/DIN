@@ -189,7 +189,7 @@ Computing Machinery]
 \fi
 \ClassInfo{\@classname}{Using fontsize \ACM@fontsize}
 \LoadClass[\ACM@fontsize, reqno]{amsart}
-\RequirePackage{microtype}
+\RequirePackage[nopatch=footnote]{microtype}
 \RequirePackage{totpages}
 \RequirePackage{environ}
 \if@ACM@manuscript
@@ -617,6 +617,7 @@ Computing Machinery]
 \if@ACM@newfonts
 \RequirePackage[tt=false, type1=true]{libertine}
 \RequirePackage[varqu]{zi4}
+\RequirePackage{amssymb}
 \RequirePackage[libertine]{newtxmath}
 \RequirePackage[T1]{fontenc}
 \fi

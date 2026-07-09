@@ -154,12 +154,12 @@ Compared with base model, DIN introduces a novel designed local activation unit 
 %\setlength\abovedisplayskip{1pt}
 %\setlength\belowdisplayskip{1pt}
 \begin{small}
-\begin{eqnarray}
+\begin{equation}
 \begin{split}
 \label{eq:attention}
 \bs{v}_U(A) = f(\bs{v}_A,\bs{e}_1,\bs{e}_2,..,\bs{e}_H) & = \sum_{j=1}^H a(\bs{e}_j,\bs{v}_A) \bs{e}_j = \sum_{j=1}^H \bs{w}_j \bs{e}_j,
 \end{split}
-\end{eqnarray}
+\end{equation}
 \end{small}
 }
 where $\{\bs{e}_1, \bs{e}_2, ..., \bs{e}_H\}$ is the list of embedding vectors of behaviors of user $U$ with length of $H$, $\bs{v}_A$ is the embedding vector of ad $A$. In this way, $\bs{v}_U(A)$ varies over different ads. $a(\cdot)$ is a feed-forward network with output as the activation weight, as illustrated in Fig.\ref{model_arch}. Apart from the two input embedding vectors, $a(\cdot)$ adds the out product of them to feed into the subsequent network, which is an explicit knowledge to help relevance   modeling.   
@@ -257,12 +257,12 @@ Expand the $\ell_2$ regularization on $\bs{\mathrm{W}}$ over samples
 %\sum_{i=1}^{n_{dj}} \frac{I_{id}}{n_{dj}}w_d^2
 %\end{equation}
 \begin{footnotesize}
-\begin{eqnarray}
+\begin{equation}
 \begin{split}
 \label{eq:batch}
 L_2(\bs{\mathrm{W}}) &= \|\bs{\mathrm{W}}\|_2^2 = \sum_{j=1}^{K}\|\bs{w}_j\|_2^2 = \sum_{(\bs{x},y)\in\mathcal{S}}\sum_{j=1}^{K} \frac{I(\bs{x}_j\neq0)}{n_{j}}\|\bs{w}_j\|_2^2,
 \end{split}
-\end{eqnarray}
+\end{equation}
 \end{footnotesize}
 where $\bs{w}_j\in\mathbb{R}^{D}$ is the $j$-th embedding vector,
 %which corresponding to the number of feature IDs in our applications.
