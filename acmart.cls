@@ -598,12 +598,7 @@ Computing Machinery]
 \def\@makefnmark{\hbox{\@textsuperscript{\normalfont\@thefnmark}}}
 \def\@textbottom{\vskip \z@ \@plus 1pt}
 \let\@texttop\relax
-\RequirePackage{iftex}
-\ifPDFTeX
-\input{glyphtounicode}
-\pdfgentounicode=1
-\fi
-\RequirePackage{cmap}
+\RequirePackage{xeCJK}
 \newif\if@ACM@newfonts
 \@ACM@newfontstrue
 \IfFileExists{libertine.sty}{}{\ClassWarning{\@classname}{You do not
@@ -615,11 +610,10 @@ Computing Machinery]
     have newtxmath package installed.  Please upgrade your
     TeX}\@ACM@newfontsfalse}
 \if@ACM@newfonts
-\RequirePackage[tt=false, type1=true]{libertine}
-\RequirePackage[varqu]{zi4}
 \RequirePackage{amssymb}
 \RequirePackage[libertine]{newtxmath}
-\RequirePackage[T1]{fontenc}
+\RequirePackage[tt=false]{libertine}
+\RequirePackage[varqu]{zi4}
 \fi
 \if@ACM@sigchiamode
   \renewcommand{\familydefault}{\sfdefault}

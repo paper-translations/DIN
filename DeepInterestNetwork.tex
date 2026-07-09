@@ -1,4 +1,6 @@
 \documentclass[sigconf]{acmart}
+\usepackage{setspace}
+\usepackage{caption}
 \usepackage{amsmath,amsfonts,bm,amsthm}
 \usepackage[linesnumbered,ruled]{algorithm2e}
 \usepackage{graphicx}
@@ -47,6 +49,19 @@
 \acmYear{2018} 
 \setcopyright{acmcopyright}
 \acmConference{KDD'18}{}{August 19--23, 2018, London, United Kingdom.}
+\setCJKmainfont[
+  BoldFont=FZHei-B01,
+  ItalicFont=FZKai-Z03,
+  BoldItalicFont=FZHei-B01,
+  SmallCapsFont=FZShuSong-Z01
+]{FZShuSong-Z01}
+\setCJKsansfont[AutoFakeBold=1.2, AutoFakeSlant=0.15]{FZHei-B01}
+\setCJKmonofont[AutoFakeBold=1.2, AutoFakeSlant=0.15]{FZHei-B01}
+\setmonofont[AutoFakeBold=1.2]{LMMono10}
+\setstretch{1.2}
+\captionsetup{font={small,it,stretch=1.2}}
+\let\oldfootnotesize\footnotesize
+\renewcommand{\footnotesize}{\oldfootnotesize\itshape}
 
 
 
