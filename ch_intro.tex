@@ -20,7 +20,7 @@
 与常用的逻辑回归模型 \cite{ftrl} 相比，这些深度学习方法可以减少大量特征工程工作，并显著增强模型能力。为简洁起见，本文将这类方法称为 Embedding\&MLP，它们目前已成为 CTR 预测任务中的常用结构。
 
 然而，在 Embedding\&MLP 方法中，维度有限的用户表征向量会成为表达用户多样化兴趣的瓶颈。%, limiting the effectiveness of model.
-以电商网站中的展示广告为例。用户访问电商网站时，可能同时对多类商品感兴趣。也就是说，用户兴趣是 \textsl{\textbf{多样化}} 的。在 CTR 预测任务中，用户兴趣通常从用户行为数据中捕获。
+以电商网站中的展示广告为例。用户访问电商网站时，可能同时对多类商品感兴趣。也就是说，用户兴趣是\textsl{\textbf{多样化}}的。在 CTR 预测任务中，用户兴趣通常从用户行为数据中捕获。
 Embedding\&MLP 方法将用户行为的 embedding 向量转换为定长向量，从而学习某个用户所有兴趣的表征，该向量位于所有用户表征向量共同构成的欧氏空间中。
 换言之，用户的多样化兴趣被压缩到一个定长向量中，这限制了 Embedding\&MLP 方法的表达能力。
 %Embedding\&MLP methods learn the  representation of all interests for a certain user by transforming the embedding vectors of user behaviors into a fixed-length vector.
