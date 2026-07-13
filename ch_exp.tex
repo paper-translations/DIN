@@ -165,8 +165,8 @@ With goods\_ids feature and Difacto Reg.  & 0.5954 & 1.49\%  \\
 
 \subsection{正则化性能}
 \label{sec:reg}
-由于 Amazon Dataset 和 MovieLens Dataset 中的特征维度都不高，约 10 万，
-包括我们提出的 DIN 在内的所有深度模型都没有遇到严重过拟合问题。
+由于 Amazon Dataset 和 MovieLens Dataset 中的特征维度都不高（约 10 万），
+包括我们提出的 DIN 在内的所有深度模型都没有遇到严重的过拟合问题。
 然而，当面对来自在线广告系统且包含更高维稀疏特征的 Alibaba 数据集时，过拟合成为一项重大挑战。
 例如，当使用细粒度特征训练深度模型时，如表 \ref{table_feature_set} 中维度为 6 亿的 $goods\_ids$ 特征，如果不使用任何正则化，第一个 epoch 后会出现严重过拟合，导致模型性能迅速下降，如图 \ref{fig:adaptive_reg} 中的深绿色曲线所示。
 因此，我们进行了细致实验，检查几种常用正则化方法的性能。
@@ -271,7 +271,7 @@ DIN 的在线服务也从中受益。
 以前文提到的年轻母亲为例，我们随机选择 9 个类别，如连衣裙、运动鞋、箱包等，并为每个类别选择 100 个商品作为她的候选广告。
 图 \ref{fig:TDdiagram} 展示了 DIN 学习到的商品 embedding 向量的 t-SNE\cite{tsne} 可视化，其中形状相同的点对应同一类别。
 可以看到，同一类别的商品几乎属于同一个簇，这清楚展示了 DIN embedding 的聚类性质。
-此外，我们按预测值为表示候选广告的点着色。图 \ref{fig:TDdiagram} 也可看作这位母亲在 embedding 空间中对潜在候选项的兴趣密度分布热力图。它表明 DIN 能够在候选项的 embedding 空间中为某个用户形成多峰兴趣密度分布，从而捕获其多样化兴趣。
+此外，我们按预测值对表示候选广告的点着色。图 \ref{fig:TDdiagram} 也可看作这位母亲在 embedding 空间中对潜在候选项的兴趣密度分布热力图。它表明 DIN 能够在候选项的 embedding 空间中为某个用户形成多峰兴趣密度分布，从而捕获其多样化兴趣。
 
 
 
