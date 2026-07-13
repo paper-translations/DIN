@@ -10,7 +10,7 @@ Chinese translation of *Deep Interest Network for Click-Through Rate Prediction*
 - `ch_approach.tex` — proposed approach (DIN)
 - `ch_sysview.tex` — system view
 - `ch_exp.tex` — experiments
-- `ch_concln.tex`, `ch_concln_2.tex` — conclusion
+- `ch_concln.tex` — conclusion
 - `images/` — figures used in the paper
 
 ## Build
